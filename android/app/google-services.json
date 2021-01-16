@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1058311517356",
+    "project_id": "spark-basic-banking-system",
+    "storage_bucket": "spark-basic-banking-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058311517356:android:5f6927dd7635ce036d1b09",
+        "android_client_info": {
+          "package_name": "com.vivek9patel.basic_banking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058311517356-7g66mcajhj2lm046tb2si812n5hbb1m5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPFRPXfq_knLVBZsXzhT8zVGbrZTvJAYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058311517356-7g66mcajhj2lm046tb2si812n5hbb1m5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
