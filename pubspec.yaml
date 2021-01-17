@@ -32,6 +32,8 @@ dependencies:
   firebase_core: ^0.5.3
   firebase_analytics: ^6.3.0
   cloud_firestore: ^0.14.4
+  provider: ^4.3.2+4
+  flushbar: ^1.10.4
 
 dev_dependencies:
   flutter_test:
