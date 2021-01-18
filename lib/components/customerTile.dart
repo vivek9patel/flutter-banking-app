@@ -10,12 +10,14 @@ class CustomerTile extends StatefulWidget {
 class _CustomerTile extends State<CustomerTile> {
   @override
   Widget build(BuildContext context) {
-    final all_customers = Provider.of<QuerySnapshot>(context).docs;
-
+    if (Provider.of<QuerySnapshot>(context) == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+    final allCustomers = Provider.of<QuerySnapshot>(context).docs;
     return ListView.builder(
-        itemCount: all_customers.length,
+        itemCount: allCustomers.length,
         itemBuilder: (context, index) {
-          dynamic customer = all_customers[index].data();
+          dynamic customer = allCustomers[index].data();
           return CustomerCard(
               customerName: customer['name'],
               customerBalance: customer['balance']);

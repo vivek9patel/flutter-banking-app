@@ -1,30 +1,19 @@
-import 'package:basic_banking/authentication/sign_in_google.dart';
 import 'package:basic_banking/database/databseService.dart';
 import 'package:basic_banking/models/customer.dart';
-import 'package:basic_banking/screens/home.dart';
+import 'package:basic_banking/components/customerTile.dart';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'customerTile.dart';
 
-class CustomersList extends StatefulWidget {
-  const CustomersList({
+class AllCustomersList extends StatelessWidget {
+  const AllCustomersList({
     Key key,
-    @required this.userName,
   }) : super(key: key);
 
-  final String userName;
-
-  @override
-  _CustomersListState createState() => _CustomersListState();
-}
-
-class _CustomersListState extends State<CustomersList> {
   @override
   Widget build(BuildContext context) {
-    final String userName = widget.userName;
-
     void _showBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
@@ -47,24 +36,6 @@ class _CustomersListState extends State<CustomersList> {
       value: DatabaseService().customers,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          title: Text("All Customers"),
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('logout'),
-              onPressed: () async {
-                await signOutGoogle().then((result) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                    (Route<dynamic> route) => false,
-                  );
-                });
-              },
-            ),
-          ],
-        ),
         body: CustomerTile(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _showBottomSheet(),

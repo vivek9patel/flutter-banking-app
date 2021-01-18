@@ -1,4 +1,4 @@
-import 'package:basic_banking/screens/home.dart';
+import 'package:basic_banking/screens/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
