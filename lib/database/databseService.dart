@@ -8,4 +8,13 @@ class DatabaseService {
   Stream<QuerySnapshot> get customers {
     return customerCollection.snapshots();
   }
+
+  Future<QuerySnapshot> getCustomerList() async {
+    try {
+      return customerCollection.get();
+    } catch (err) {
+      print(err);
+      return null;
+    }
+  }
 }
