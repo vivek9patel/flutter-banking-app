@@ -1,3 +1,4 @@
+import 'package:basic_banking/models/history.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -201,12 +202,22 @@ class _BottomSheetConfirmationState extends State<BottomSheetConfirmation> {
             .update({"balance": _senderBalance}).then((value) {
           print("Amount Deducted Successfully");
         });
+
         DatabaseService()
             .customerCollection
             .doc(_receiverDocId)
             .update({"balance": _receiverBalance}).then((value) {
           print("Amount Added Successfully");
         });
+
+        History(
+                sender: senderName,
+                receiver: receiverName,
+                amount: amount,
+                dateTime: DateTime.now())
+            .save()
+            .then((value) => print("Transaction History Saved!"));
+
         transfferResult = 1;
       } else {
         transfferResult = 2;
