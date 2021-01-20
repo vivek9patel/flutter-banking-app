@@ -8,9 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 class AllCustomersList extends StatelessWidget {
-  const AllCustomersList({
-    Key key,
-  }) : super(key: key);
+  const AllCustomersList({Key key, this.userEmail}) : super(key: key);
+
+  final String userEmail;
+
+  static List<String> admin = [
+    "vicky.p8980@gmail.com",
+    "vivek.p9737@gmail.com"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +42,13 @@ class AllCustomersList extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: CustomerTile(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _showBottomSheet(),
-          child: Icon(Icons.add),
-          backgroundColor: Colors.green,
-        ),
+        floatingActionButton: admin.contains(userEmail)
+            ? FloatingActionButton(
+                onPressed: () => _showBottomSheet(),
+                child: Icon(Icons.add),
+                backgroundColor: Colors.green,
+              )
+            : null,
       ),
     );
   }

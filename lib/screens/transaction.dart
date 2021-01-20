@@ -229,117 +229,127 @@ class _BottomSheetConfirmationState extends State<BottomSheetConfirmation> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: SingleChildScrollView(
-          child: Column(children: <Widget>[
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-            child: Row(
-              children: [
-                Text("From Sender: ${widget._senderName} "),
-                Text("[\$$_senderBalance]")
-              ],
-            ),
-          )),
-        ),
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Text("Transfer Amount: "),
-              Text(
-                "\$${widget._transferAmount}",
-                style: TextStyle(fontWeight: FontWeight.bold),
+    return _senderBalance == null || _receiverBalance == null
+        ? Container(
+            height: 200,
+            width: 200,
+            child: Center(child: CircularProgressIndicator()))
+        : Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SingleChildScrollView(
+                child: Column(children: <Widget>[
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+                  child: Row(
+                    children: [
+                      Text("From Sender: ${widget._senderName} "),
+                      Text("[\$$_senderBalance]")
+                    ],
+                  ),
+                )),
               ),
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-            child: Row(
-              children: [
-                Text("To Receiver: ${widget._receiverName} "),
-                Text("[\$$_receiverBalance]")
-              ],
-            ),
-          )),
-        ),
-        SizedBox(height: 30),
-        RaisedButton(
-            color: Colors.green[400],
-            child: Text(
-              "Make Transaction",
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              int isTranssferd = _transferTo(widget._senderName,
-                  widget._receiverName, int.parse(widget._transferAmount));
-              Navigator.pop(context);
-              if (isTranssferd == 1) {
-                // Transfer Successful
-                Flushbar(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                  padding: EdgeInsets.all(20),
-                  borderRadius: 10,
-                  message: "Transfer Successful!",
-                  duration: Duration(seconds: 3),
-                  icon: Icon(Icons.check_circle,
-                      size: 28, color: Colors.greenAccent),
-                  dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                  // leftBarIndicatorColor: Colors.blue[300],
-                )..show(context);
-              } else if (isTranssferd == -1) {
-                // Transfer Error
-                Flushbar(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                  padding: EdgeInsets.all(20),
-                  borderRadius: 10,
-                  message: "Transfer Unsuccessful!",
-                  duration: Duration(seconds: 3),
-                  icon: Icon(Icons.cancel, size: 28, color: Colors.redAccent),
-                  dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                  // leftBarIndicatorColor: Colors.blue[300],
-                )..show(context);
-              } else if (isTranssferd == 2) {
-                // Insufficient Balance
-                Flushbar(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                  padding: EdgeInsets.all(20),
-                  borderRadius: 10,
-                  message: "Insufficient Balance!",
-                  duration: Duration(seconds: 3),
-                  icon: Icon(Icons.cancel, size: 28, color: Colors.redAccent),
-                  dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                  // leftBarIndicatorColor: Colors.blue[300],
-                )..show(context);
-              } else {
-                // Names are Same
-                Flushbar(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                  padding: EdgeInsets.all(20),
-                  borderRadius: 10,
-                  message: "Sender & Receiver are Same!",
-                  duration: Duration(seconds: 3),
-                  icon: Icon(Icons.cancel, size: 28, color: Colors.redAccent),
-                  dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                  // leftBarIndicatorColor: Colors.blue[300],
-                )..show(context);
-              }
-            }),
-        SizedBox(height: 30)
-      ])),
-    );
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Transfer Amount: "),
+                    Text(
+                      "\$${widget._transferAmount}",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+                  child: Row(
+                    children: [
+                      Text("To Receiver: ${widget._receiverName} "),
+                      Text("[\$$_receiverBalance]")
+                    ],
+                  ),
+                )),
+              ),
+              SizedBox(height: 30),
+              RaisedButton(
+                  color: Colors.green[400],
+                  child: Text(
+                    "Make Transaction",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    int isTranssferd = _transferTo(
+                        widget._senderName,
+                        widget._receiverName,
+                        int.parse(widget._transferAmount));
+                    Navigator.pop(context);
+                    if (isTranssferd == 1) {
+                      // Transfer Successful
+                      Flushbar(
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                        padding: EdgeInsets.all(20),
+                        borderRadius: 10,
+                        message: "Transfer Successful!",
+                        duration: Duration(seconds: 3),
+                        icon: Icon(Icons.check_circle,
+                            size: 28, color: Colors.greenAccent),
+                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+                        // leftBarIndicatorColor: Colors.blue[300],
+                      )..show(context);
+                    } else if (isTranssferd == -1) {
+                      // Transfer Error
+                      Flushbar(
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                        padding: EdgeInsets.all(20),
+                        borderRadius: 10,
+                        message: "Transfer Unsuccessful!",
+                        duration: Duration(seconds: 3),
+                        icon: Icon(Icons.cancel,
+                            size: 28, color: Colors.redAccent),
+                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+                        // leftBarIndicatorColor: Colors.blue[300],
+                      )..show(context);
+                    } else if (isTranssferd == 2) {
+                      // Insufficient Balance
+                      Flushbar(
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                        padding: EdgeInsets.all(20),
+                        borderRadius: 10,
+                        message: "Insufficient Balance!",
+                        duration: Duration(seconds: 3),
+                        icon: Icon(Icons.cancel,
+                            size: 28, color: Colors.redAccent),
+                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+                        // leftBarIndicatorColor: Colors.blue[300],
+                      )..show(context);
+                    } else {
+                      // Names are Same
+                      Flushbar(
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                        padding: EdgeInsets.all(20),
+                        borderRadius: 10,
+                        message: "Sender & Receiver are Same!",
+                        duration: Duration(seconds: 3),
+                        icon: Icon(Icons.cancel,
+                            size: 28, color: Colors.redAccent),
+                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+                        // leftBarIndicatorColor: Colors.blue[300],
+                      )..show(context);
+                    }
+                  }),
+              SizedBox(height: 30)
+            ])),
+          );
   }
 }
 

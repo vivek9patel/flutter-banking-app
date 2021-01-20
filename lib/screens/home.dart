@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 class CustomersList extends StatefulWidget {
   const CustomersList({
     Key key,
-    @required this.userName,
+    @required this.userDetails,
   }) : super(key: key);
 
-  final String userName;
+  final Map<String, String> userDetails;
 
   @override
   _CustomersListState createState() => _CustomersListState();
@@ -19,32 +19,73 @@ class CustomersList extends StatefulWidget {
 
 class _CustomersListState extends State<CustomersList> {
   int _selectedIndex = 0;
-  var screens = [
-    {
-      "title": "All customers",
-      "screen": AllCustomersList(),
-      "bgColor": Colors.blue
-    },
-    {
-      "title": "Transaction",
-      "screen": MakeTransaction(),
-      "bgColor": Colors.amber[400]
-    },
-    {"title": "History", "screen": History(), "bgColor": Colors.blueGrey},
-  ];
 
   @override
   Widget build(BuildContext context) {
-    final String userName = widget.userName;
+    var screens = [
+      {
+        "title": "All customers",
+        "screen": AllCustomersList(userEmail: widget.userDetails["userEmail"]),
+        "bgColor": Colors.transparent,
+        "elevation": 0.0,
+        "textColor": Colors.black,
+      },
+      {
+        "title": "Transaction",
+        "screen": MakeTransaction(),
+        "bgColor": Colors.blue[400]
+      },
+      {"title": "History", "screen": History(), "bgColor": Colors.blueGrey},
+    ];
+    final Map<String, String> userDetails = widget.userDetails;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(screens[_selectedIndex]["title"]),
+        elevation: screens[_selectedIndex]["elevation"] ?? 4.0,
+        title: Row(children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(35, 0, 0, 0),
+                  spreadRadius: 3,
+                  blurRadius: 2,
+                  offset: Offset(0, 1),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image(
+                image: NetworkImage(userDetails["userImgUrl"].toString()),
+                width: 35,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Text(
+            screens[_selectedIndex]["title"],
+            style: TextStyle(
+                color: screens[_selectedIndex]["textColor"] ?? Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 24),
+          )
+        ]),
         backgroundColor: screens[_selectedIndex]["bgColor"],
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('logout'),
+            icon: Icon(
+              Icons.logout,
+              size: 26,
+            ),
+            label: Text(
+              'Log Out',
+              style: TextStyle(fontSize: 0),
+            ),
             onPressed: () async {
               await signOutGoogle().then((result) {
                 Navigator.pushAndRemoveUntil(
@@ -59,12 +100,13 @@ class _CustomersListState extends State<CustomersList> {
       ),
       body: screens[_selectedIndex]["screen"],
       bottomNavigationBar: BottomNavigationBar(
+        elevation: screens[_selectedIndex]["elevation"] ?? 4.0,
         type: BottomNavigationBarType.shifting,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Customers',
-              backgroundColor: screens[0]["bgColor"]),
+              backgroundColor: Colors.orange),
           BottomNavigationBarItem(
               icon: Icon(Icons.money),
               label: 'Transaction',
