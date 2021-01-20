@@ -6,8 +6,8 @@ import 'package:basic_banking/database/databseService.dart';
 import 'package:flutter/services.dart';
 
 class MakeTransaction extends StatefulWidget {
-  const MakeTransaction({Key key}) : super(key: key);
-
+  const MakeTransaction({Key key, this.currentUser}) : super(key: key);
+  final String currentUser;
   @override
   _MakeTransactionState createState() => _MakeTransactionState();
 }
@@ -67,6 +67,7 @@ class _MakeTransactionState extends State<MakeTransaction> {
               senderName: _senderName,
               transferAmount: _transferAmount,
               receiverName: _receiverName,
+              currentUser: widget.currentUser,
             );
           },
           elevation: 5.0,
@@ -140,14 +141,17 @@ class BottomSheetConfirmation extends StatefulWidget {
     @required String senderName,
     @required String transferAmount,
     @required String receiverName,
+    @required String currentUser,
   })  : _senderName = senderName,
         _transferAmount = transferAmount,
         _receiverName = receiverName,
+        _currentUser = currentUser,
         super(key: key);
 
   final String _senderName;
   final String _transferAmount;
   final String _receiverName;
+  final String _currentUser;
 
   @override
   _BottomSheetConfirmationState createState() =>
@@ -157,9 +161,10 @@ class BottomSheetConfirmation extends StatefulWidget {
 class _BottomSheetConfirmationState extends State<BottomSheetConfirmation> {
   int _senderBalance, _receiverBalance;
   String _senderDocId, _receiverDocId;
-
+  String currentUser;
   void initState() {
     super.initState();
+    currentUser = widget._currentUser;
     getAccBalance(widget._senderName).then((value) {
       setState(() {
         _senderBalance = value["accBal"];
@@ -214,9 +219,13 @@ class _BottomSheetConfirmationState extends State<BottomSheetConfirmation> {
                 sender: senderName,
                 receiver: receiverName,
                 amount: amount,
-                dateTime: DateTime.now())
+                dateTime: DateTime.now(),
+                currentUser: currentUser)
             .save()
-            .then((value) => print("Transaction History Saved!"));
+            .then((value) => print("Transaction History Saved!"))
+            .catchError((err) {
+          print(err);
+        });
 
         transfferResult = 1;
       } else {

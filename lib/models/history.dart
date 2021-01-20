@@ -5,11 +5,16 @@ class History {
   String receiver;
   int amount;
   DateTime dateTime;
-
+  String currentUser;
   final CollectionReference _historyCollection =
       FirebaseFirestore.instance.collection('transaction_history');
 
-  History({this.sender, this.receiver, this.amount, this.dateTime});
+  History(
+      {this.sender,
+      this.receiver,
+      this.amount,
+      this.dateTime,
+      this.currentUser});
 
   Future<void> save() async {
     try {
@@ -17,10 +22,11 @@ class History {
         "sender": sender,
         "receiver": receiver,
         "amount": amount,
-        "date_time": dateTime
+        "date_time": dateTime,
+        "done_by": currentUser
       });
     } catch (err) {
-      print(err);
+      throw err;
     }
   }
 }

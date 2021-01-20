@@ -32,7 +32,7 @@ class _CustomersListState extends State<CustomersList> {
       },
       {
         "title": "Transaction",
-        "screen": MakeTransaction(),
+        "screen": MakeTransaction(currentUser: widget.userDetails["userName"]),
         "bgColor": Colors.blue[400]
       },
       {"title": "History", "screen": History(), "bgColor": Colors.blueGrey},
