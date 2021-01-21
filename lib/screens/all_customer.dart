@@ -30,7 +30,28 @@ class AllCustomersList extends StatelessWidget {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: SingleChildScrollView(
-                child: Column(children: <Widget>[AddCustomerForm()])),
+                child: Column(children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: 200,
+                height: 20,
+                child: Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Divider(
+                    indent: 1,
+                    endIndent: 1,
+                    thickness: 8,
+                    color: Colors.grey[300],
+                  ),
+                ),
+              ),
+              AddCustomerForm()
+            ])),
           );
         },
         elevation: 5.0,
