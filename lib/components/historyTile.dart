@@ -25,7 +25,7 @@ class _HistoryTile extends State<HistoryTile> {
             receiver: history['receiver'],
             dateTime: history["date_time"],
             amount: history["amount"],
-            doneBy: history["done_by"],
+            doneBy: history["done_by"] ?? "anonymous",
           );
         });
   }
