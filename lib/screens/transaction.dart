@@ -58,8 +58,10 @@ class _MakeTransactionState extends State<MakeTransaction> {
           _receiverName != null &&
           _transferAmount != null) {
         showModalBottomSheet(
-          isScrollControlled: true,
+          isScrollControlled: false,
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.white),
               borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
           context: context,
           builder: (context) {
@@ -76,59 +78,128 @@ class _MakeTransactionState extends State<MakeTransaction> {
     }
 
     return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Row(
-              children: <Widget>[
-                SenderDropDown(
-                    customerNamesList: customerNamesList,
-                    setSender: (val) => setState(() => _senderName = val)),
-                SizedBox(
-                  width: 50,
-                ),
-                ReciverDropDown(
-                  customerNamesList: customerNamesList,
-                  setRecevier: (val) => setState(() => _receiverName = val),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  width: 150,
-                  height: 60,
-                  child: TextField(
-                      autofocus: false,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.monetization_on),
-                        hintText: 'Enter Amount',
-                        labelText: 'Amount *',
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Container(
+            height: 400,
+            width: 500,
+            child: Card(
+              elevation: 5.0,
+              shadowColor: Color.fromARGB(55, 0, 0, 0),
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.transparent, width: 1),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SenderDropDown(
+                          customerNamesList: customerNamesList,
+                          setSender: (val) =>
+                              setState(() => _senderName = val)),
+                      SizedBox(
+                        width: 10,
                       ),
-                      keyboardType: TextInputType.number,
-                      onChanged: (String value) {
-                        setState(() {
-                          _transferAmount = value;
-                        });
-                      }),
-                )
-              ],
+                      ReciverDropDown(
+                        customerNamesList: customerNamesList,
+                        setRecevier: (val) =>
+                            setState(() => _receiverName = val),
+                      )
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                        child: Text("Amount *",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[600])),
+                      ),
+                      Container(
+                        width: 200,
+                        height: 50,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Color.fromARGB(130, 40, 33, 173),
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(10)),
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 4),
+                            child: TextField(
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 0.5,
+                                    fontFamily: "Roboto"),
+                                autofocus: false,
+                                decoration: const InputDecoration(
+                                    icon: Icon(
+                                      Icons.monetization_on_rounded,
+                                      size: 22,
+                                    ),
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: 'Enter Amount',
+                                    hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Raleway",
+                                        letterSpacing: 0)),
+                                keyboardType: TextInputType.number,
+                                onChanged: (String value) {
+                                  setState(() {
+                                    _transferAmount = value;
+                                  });
+                                }),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                color: Color.fromARGB(130, 40, 33, 173),
+                                width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        color: Color.fromARGB(200, 40, 33, 173),
+                        onPressed: () {
+                          _transferMoney();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 15, 8, 15),
+                          child: Text("Transfer",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800)),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-            SizedBox(height: 30),
-            Row(
-              children: [
-                RaisedButton(
-                  color: Colors.green,
-                  onPressed: () {
-                    _transferMoney();
-                  },
-                  child:
-                      Text("Transfer", style: TextStyle(color: Colors.white)),
-                )
-              ],
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -238,127 +309,219 @@ class _BottomSheetConfirmationState extends State<BottomSheetConfirmation> {
 
   @override
   Widget build(BuildContext context) {
+    String senderBalance = _senderBalance.toString().replaceAllMapped(
+        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    String recevierBalance = _receiverBalance.toString().replaceAllMapped(
+        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    String transfferAmount = widget._transferAmount.toString().replaceAllMapped(
+        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
     return _senderBalance == null || _receiverBalance == null
         ? Container(
             height: 200,
             width: 200,
             child: Center(child: CircularProgressIndicator()))
         : Container(
+            color: Colors.transparent,
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: SingleChildScrollView(
-                child: Column(children: <Widget>[
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                    child: Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-                  child: Row(
-                    children: [
-                      Text("From Sender: ${widget._senderName} "),
-                      Text("[\$$_senderBalance]")
-                    ],
-                  ),
-                )),
+            child: Column(children: [
+              SizedBox(
+                height: 10,
               ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text("Transfer Amount: "),
-                    Text(
-                      "\$${widget._transferAmount}",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
+              SizedBox(
+                width: 200,
+                height: 20,
+                child: Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Divider(
+                    indent: 1,
+                    endIndent: 1,
+                    thickness: 8,
+                    color: Colors.grey[300],
+                  ),
                 ),
               ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                    child: Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-                  child: Row(
-                    children: [
-                      Text("To Receiver: ${widget._receiverName} "),
-                      Text("[\$$_receiverBalance]")
-                    ],
-                  ),
-                )),
-              ),
-              SizedBox(height: 30),
-              RaisedButton(
-                  color: Colors.green[400],
-                  child: Text(
-                    "Make Transaction",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    int isTranssferd = _transferTo(
-                        widget._senderName,
-                        widget._receiverName,
-                        int.parse(widget._transferAmount));
-                    Navigator.pop(context);
-                    if (isTranssferd == 1) {
-                      // Transfer Successful
-                      Flushbar(
-                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                        padding: EdgeInsets.all(20),
-                        borderRadius: 10,
-                        message: "Transfer Successful!",
-                        duration: Duration(seconds: 3),
-                        icon: Icon(Icons.check_circle,
-                            size: 28, color: Colors.greenAccent),
-                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                        // leftBarIndicatorColor: Colors.blue[300],
-                      )..show(context);
-                    } else if (isTranssferd == -1) {
-                      // Transfer Error
-                      Flushbar(
-                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                        padding: EdgeInsets.all(20),
-                        borderRadius: 10,
-                        message: "Transfer Unsuccessful!",
-                        duration: Duration(seconds: 3),
-                        icon: Icon(Icons.cancel,
-                            size: 28, color: Colors.redAccent),
-                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                        // leftBarIndicatorColor: Colors.blue[300],
-                      )..show(context);
-                    } else if (isTranssferd == 2) {
-                      // Insufficient Balance
-                      Flushbar(
-                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                        padding: EdgeInsets.all(20),
-                        borderRadius: 10,
-                        message: "Insufficient Balance!",
-                        duration: Duration(seconds: 3),
-                        icon: Icon(Icons.cancel,
-                            size: 28, color: Colors.redAccent),
-                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                        // leftBarIndicatorColor: Colors.blue[300],
-                      )..show(context);
-                    } else {
-                      // Names are Same
-                      Flushbar(
-                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                        padding: EdgeInsets.all(20),
-                        borderRadius: 10,
-                        message: "Sender & Receiver are Same!",
-                        duration: Duration(seconds: 3),
-                        icon: Icon(Icons.cancel,
-                            size: 28, color: Colors.redAccent),
-                        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                        // leftBarIndicatorColor: Colors.blue[300],
-                      )..show(context);
-                    }
-                  }),
-              SizedBox(height: 30)
-            ])),
-          );
+              SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                            shadowColor: Color.fromARGB(80, 0, 0, 0),
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Color.fromARGB(130, 40, 33, 173),
+                                    width: 1.5),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 15, 5, 15),
+                              child: Row(
+                                children: [
+                                  Text("From Sender: "),
+                                  Text(
+                                    "${widget._senderName} ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 15,
+                                        color: Colors.grey[700]),
+                                  ),
+                                  Text("[\$$senderBalance]",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Roboto",
+                                          color: Colors.grey))
+                                ],
+                              ),
+                            )),
+                      ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
+                        child: Row(
+                          children: [
+                            Text("Transfer Amount: "),
+                            Card(
+                              color: Color.fromARGB(255, 239, 241, 245),
+                              elevation: 0.0,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.transparent, width: 1.5),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                                child: Text(
+                                  "\$" + transfferAmount,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 17,
+                                      color: Color.fromARGB(255, 40, 33, 173)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                            shadowColor: Color.fromARGB(80, 0, 0, 0),
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Color.fromARGB(130, 40, 33, 173),
+                                    width: 1.5),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 15, 5, 15),
+                              child: Row(
+                                children: [
+                                  Text("To Receiver: "),
+                                  Text("${widget._receiverName} ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 15,
+                                          color: Colors.grey[700])),
+                                  Text("[\$$recevierBalance]",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Roboto",
+                                          color: Colors.grey))
+                                ],
+                              ),
+                            )),
+                      ),
+                      SizedBox(height: 30),
+                      RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Colors.transparent, width: 1),
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Colors.green[400],
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 15, 8, 15),
+                            child: Text(
+                              "Confirm Transaction",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ),
+                          onPressed: () {
+                            int isTranssferd = _transferTo(
+                                widget._senderName,
+                                widget._receiverName,
+                                int.parse(widget._transferAmount));
+                            Navigator.pop(context);
+                            if (isTranssferd == 1) {
+                              // Transfer Successful
+                              Flushbar(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                padding: EdgeInsets.all(20),
+                                borderRadius: 10,
+                                message: "Transfer Successful!",
+                                duration: Duration(seconds: 3),
+                                icon: Icon(Icons.check_circle,
+                                    size: 28, color: Colors.greenAccent),
+                                dismissDirection:
+                                    FlushbarDismissDirection.HORIZONTAL,
+                                // leftBarIndicatorColor: Colors.blue[300],
+                              )..show(context);
+                            } else if (isTranssferd == -1) {
+                              // Transfer Error
+                              Flushbar(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                padding: EdgeInsets.all(20),
+                                borderRadius: 10,
+                                message: "Transfer Unsuccessful!",
+                                duration: Duration(seconds: 3),
+                                icon: Icon(Icons.cancel,
+                                    size: 28, color: Colors.redAccent),
+                                dismissDirection:
+                                    FlushbarDismissDirection.HORIZONTAL,
+                                // leftBarIndicatorColor: Colors.blue[300],
+                              )..show(context);
+                            } else if (isTranssferd == 2) {
+                              // Insufficient Balance
+                              Flushbar(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                padding: EdgeInsets.all(20),
+                                borderRadius: 10,
+                                message: "Insufficient Balance!",
+                                duration: Duration(seconds: 3),
+                                icon: Icon(Icons.cancel,
+                                    size: 28, color: Colors.redAccent),
+                                dismissDirection:
+                                    FlushbarDismissDirection.HORIZONTAL,
+                                // leftBarIndicatorColor: Colors.blue[300],
+                              )..show(context);
+                            } else {
+                              // Names are Same
+                              Flushbar(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                padding: EdgeInsets.all(20),
+                                borderRadius: 10,
+                                message: "Sender & Receiver are Same!",
+                                duration: Duration(seconds: 3),
+                                icon: Icon(Icons.cancel,
+                                    size: 28, color: Colors.redAccent),
+                                dismissDirection:
+                                    FlushbarDismissDirection.HORIZONTAL,
+                                // leftBarIndicatorColor: Colors.blue[300],
+                              )..show(context);
+                            }
+                          }),
+                      SizedBox(height: 30)
+                    ]),
+              )
+            ]));
   }
 }
 
@@ -380,29 +543,52 @@ class _SenderDropDownState extends State<SenderDropDown> {
   @override
   Widget build(BuildContext context) {
     return widget.customerNamesList != null
-        ? DropdownButton(
-            value: _currentSender,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            style: TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                _currentSender = newValue;
-              });
-              widget.setSender(newValue);
-            },
-            items: widget.customerNamesList
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                child: Text(
+                  "Select Sender *",
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 5, 0),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      value: _currentSender,
+                      icon: Icon(Icons.arrow_drop_down_rounded),
+                      iconSize: 26,
+                      elevation: 1,
+                      iconEnabledColor: Colors.deepPurple,
+                      iconDisabledColor: Colors.grey,
+                      style: TextStyle(
+                          color: Colors.deepPurple[400],
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          _currentSender = newValue;
+                        });
+                        widget.setSender(newValue);
+                      },
+                      items: widget.customerNamesList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
         : CircularProgressIndicator();
   }
@@ -424,30 +610,49 @@ class _ReciverDropDownState extends State<ReciverDropDown> {
   @override
   Widget build(BuildContext context) {
     return widget.customerNamesList != null
-        ? DropdownButton(
-            value: _currentReciever,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            style: TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                _currentReciever = newValue;
-              });
-              widget.setRecevier(newValue);
-            },
-            items: widget.customerNamesList
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          )
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                    child: Text(
+                      "Select Receiver *",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600]),
+                    )),
+                Card(
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 5, 0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _currentReciever,
+                            icon: Icon(Icons.arrow_drop_down_rounded),
+                            iconSize: 26,
+                            elevation: 1,
+                            iconEnabledColor: Colors.deepPurple,
+                            iconDisabledColor: Colors.grey,
+                            style: TextStyle(
+                                color: Colors.deepPurple[400],
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.2),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _currentReciever = newValue;
+                              });
+                              widget.setRecevier(newValue);
+                            },
+                            items: widget.customerNamesList
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        )))
+              ])
         : CircularProgressIndicator();
   }
 }
