@@ -52,7 +52,7 @@ This Project is created to learn Flutter and Firebase.Used for creating transact
 
 - [Flutter](https://flutter.dev/)
 - [Firebase Authentication](https://firebase.google.com/docs/auth)
-- [Firestore Databse](https://firebase.google.com/docs/firestore)
+- [Firestore Database](https://firebase.google.com/docs/firestore)
 
 ## Demo
 
