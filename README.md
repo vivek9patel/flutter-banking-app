@@ -58,11 +58,11 @@ This Project is created to learn Flutter and Firebase.Used for creating transact
 
 - Here are some Screen shots of different Screens of this Flutter APP
   </br>
-  <img src="images/demo/Screenshot_20210122-101432.jpg" alt="Logo" width="150">
-  <img src="images/demo/Screenshot_20210122-101443.jpg" alt="Logo" width="150">
-  <img src="images/demo/Screenshot_20210122-101449.jpg" alt="Logo" width="150">
-  <img src="images/demo/Screenshot_20210122-101513.jpg" alt="Logo" width="150">
-  <img src="images/demo/Screenshot_20210122-101536.jpg" alt="Logo" width="150">
+  <img src="images/demo/Screenshot_20210122-101432.jpg" alt="Logo" width="250">
+  <img src="images/demo/Screenshot_20210122-101443.jpg" alt="Logo" width="250">
+  <img src="images/demo/Screenshot_20210122-101449.jpg" alt="Logo" width="250">
+  <img src="images/demo/Screenshot_20210122-101513.jpg" alt="Logo" width="250">
+  <img src="images/demo/Screenshot_20210122-101536.jpg" alt="Logo" width="250">
 
 ## Contributing
 
