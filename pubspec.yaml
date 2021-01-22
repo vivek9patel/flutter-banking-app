@@ -1,5 +1,5 @@
 name: basic_banking
-description: A new Flutter project.
+description: A Flutter Project with integration of Firebase, for basic transaction between users.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
