@@ -1,4 +1,4 @@
-import 'package:basic_banking/screens/home.dart';
+import 'package:basic_banking/screens/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Home Page",
       home: Home(),
+      theme: ThemeData(fontFamily: "Raleway"),
     );
   }
 }
